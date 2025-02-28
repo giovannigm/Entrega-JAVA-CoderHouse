@@ -1,5 +1,7 @@
 package com.PreEntrega1.testJPA.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,10 @@ public class AnimalService {
 
     public Animal saveAnimal(Animal animal) {
         return animalRepository.save(animal);
+    }
+
+    public List <Animal> findAll(){
+        return animalRepository.findAll();
     }
 
 }

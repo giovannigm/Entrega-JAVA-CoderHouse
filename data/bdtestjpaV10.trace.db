@@ -96,3 +96,7 @@ create global temporary table HTE_cabania(rn_ integer not null, id bigint, nombr
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "HTE_CABANIA" ya existe
 Table "HTE_CABANIA" already exists; SQL statement:
 create global temporary table HTE_cabania(rn_ integer not null, id bigint, nombre varchar(255), telefono varchar(255), ubicacion varchar(255), primary key (rn_)) TRANSACTIONAL [42101-232]
+2025-02-28 00:41:25.796914-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]CABANIA"; se esperaba "COMMIT, CREATE, CALL, CHECKPOINT, COMMENT"
+Syntax error in SQL statement "[*]CABANIA"; expected "COMMIT, CREATE, CALL, CHECKPOINT, COMMENT"; SQL statement:
+CABANIA [42001-232]
