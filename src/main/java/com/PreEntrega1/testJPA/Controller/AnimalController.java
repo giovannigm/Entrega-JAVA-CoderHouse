@@ -15,7 +15,7 @@ public class AnimalController {
     @Autowired
     private AnimalService animalService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Animal> getAllAnimals() {
         return animalService.findAll();
     }

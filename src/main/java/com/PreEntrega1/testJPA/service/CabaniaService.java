@@ -1,5 +1,7 @@
 package com.PreEntrega1.testJPA.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,10 @@ public class CabaniaService {
             throw new Exception("Ya existe una Cabania con el mismo nombre.");
         }
         cabaniaRepository.save(cabania);
+    }
+
+    public List<Cabania> findAll() {
+        return cabaniaRepository.findAll();
     }
 
 }
