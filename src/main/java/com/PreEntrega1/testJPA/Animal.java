@@ -8,6 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Data // Te ahorras de escribir los getters y setters
@@ -16,7 +18,7 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int edad;
+    private Date ingreso;
     private String color;
     private String especie; // caballo, oveja, vaca, etc.
     private String sexo; // macho o hembra
@@ -32,12 +34,12 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(String especie, String raza, String sexo, int edad, String caravana, String descripcion,
+    public Animal(String especie, String raza, String sexo, Date ingreso, String caravana, String descripcion,
             String color, Cabania cabania, Long numero_carabana_madre) {
         this.especie = especie;
         this.raza = raza;
         this.sexo = sexo;
-        this.edad = edad;
+        this.ingreso = ingreso;
         this.caravana = caravana;
         this.descripcion = descripcion;
         this.color = color;
