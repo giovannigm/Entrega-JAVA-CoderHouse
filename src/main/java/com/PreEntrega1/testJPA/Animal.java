@@ -9,7 +9,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Data // Te ahorras de escribir los getters y setters
