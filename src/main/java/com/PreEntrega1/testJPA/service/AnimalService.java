@@ -29,6 +29,19 @@ public class AnimalService {
     public String createAnimalWithCabania(Animal animal, Long cabaniaId) throws Exception {
         Cabania cabania = cabaniaRepository.findById(cabaniaId)
                 .orElseThrow(() -> new Exception("Cabaña no encontrada"));
+        
+        if (animalRepository.existsByCaravana(animal.getCaravana())) {
+            throw new Exception("Ya existe un animal con el número de caravana proporcionado");
+        }
+
+        if (animal.getNumero_carabana_madre() != null) {
+            Animal madre = animalRepository.findByCaravana(animal.getNumero_carabana_madre())
+                    .orElseThrow(() -> new Exception("No existe un animal con el número de caravana de la madre proporcionado"));
+            if (!"hembra".equalsIgnoreCase(madre.getSexo())) {
+                throw new Exception("El número de caravana proporcionado pertenece a un macho");
+            }
+        }
+
         animal.setCabania(cabania);
         animalRepository.save(animal);
         return "Animal Creado con éxito";

@@ -24,7 +24,7 @@ public class Animal {
     private String descripcion;
     private String raza;
     private String caravana;
-    private Long numero_carabana_madre; // si es hijo de otro animal se pone numero de carabana de la "madre"
+    private String numero_carabana_madre; // si es hijo de otro animal se pone numero de carabana de la "madre"
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "cabania_id")
@@ -34,7 +34,7 @@ public class Animal {
     }
 
     public Animal(String especie, String raza, String sexo, Date ingreso, String caravana, String descripcion,
-            String color, Cabania cabania, Long numero_carabana_madre) {
+            String color, Cabania cabania, String numero_carabana_madre) {
         this.especie = especie;
         this.raza = raza;
         this.sexo = sexo;
