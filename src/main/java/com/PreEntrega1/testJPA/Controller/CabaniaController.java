@@ -22,6 +22,7 @@ public class CabaniaController {
     private CabaniaService cabaniaService;
 
     @GetMapping("/all")
+    // API: http://localhost:8080/Cabania/all
     public ResponseEntity<List<Cabania>> getAllCabanias() {
         try {
             List<Cabania> cabanias = cabaniaService.findAll();

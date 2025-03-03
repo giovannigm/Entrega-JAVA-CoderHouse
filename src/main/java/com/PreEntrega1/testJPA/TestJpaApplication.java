@@ -24,7 +24,7 @@ public class TestJpaApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Primera Pre-Entrega 1");
+        System.out.println("API REST - Entregable 1");
         Cabania cab1 = new Cabania("Prueba", "Mi PC", "456");
         Cabania cab2 = new Cabania("El establo", "ruta 2", "1256");
         Cabania cab3 = new Cabania("suffolk", "ruta 3", "1256");

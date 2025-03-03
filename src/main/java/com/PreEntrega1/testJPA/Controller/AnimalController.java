@@ -21,11 +21,24 @@ public class AnimalController {
     private AnimalService animalService;
 
     @GetMapping("/all")
+    // API: http://localhost:8080/Animal/all
     public List<Animal> getAllAnimals() {
         return animalService.findAll();
     }
 
     @PostMapping("/create")
+    // API: http://localhost:8080/Animal/create?cabaniaId=1
+    // Params: cabaniaId=1
+    // body: {
+    // "edad": 5,
+    // "color": "marrón",
+    // "especie": "vaca",
+    // "sexo": "hembra",
+    // "descripcion": "Una vaca marrón",
+    // "raza": "Holstein",
+    // "caravana": "12546",
+    // "numero_carabana_madre": 3042
+    // }
     public ResponseEntity<String> createAnimal(@RequestBody Animal animal, @RequestParam Long cabaniaId) {
         try {
             String createdAnimal = animalService.createAnimalWithCabania(animal, cabaniaId);
