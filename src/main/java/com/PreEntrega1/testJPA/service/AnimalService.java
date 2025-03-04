@@ -27,6 +27,10 @@ public class AnimalService {
     }
 
     public String createAnimalWithCabania(Animal animal, Long cabaniaId) throws Exception {
+        if (!animal.isActivo()) {
+            throw new Exception("No se puede crear un animal que no esté activo");
+        }
+
         Cabania cabania = cabaniaRepository.findById(cabaniaId)
                 .orElseThrow(() -> new Exception("Cabaña no encontrada"));
         
@@ -45,5 +49,19 @@ public class AnimalService {
         animal.setCabania(cabania);
         animalRepository.save(animal);
         return "Animal Creado con éxito";
+    }
+
+    public String deleteAnimal(String numeroCaravana, String comentarioBaja) throws Exception {
+        Animal animal = animalRepository.findByCaravana(numeroCaravana)
+                .orElseThrow(() -> new Exception("Animal no encontrado"));
+        
+        if (!animal.isActivo()) {
+            throw new Exception("El animal ya está dado de baja");
+        }
+
+        animal.setComentarioBaja(comentarioBaja);
+        animal.setActivo(false);
+        animalRepository.save(animal);
+        return "Animal dado de baja con éxito";
     }
 }
