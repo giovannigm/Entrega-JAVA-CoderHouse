@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import java.util.Map;
 
 import com.PreEntrega1.testJPA.service.AnimalService;
@@ -51,19 +51,24 @@ public class AnimalController {
         }
     }
 
-    @DeleteMapping("/delete/{numeroCaravana}")
-    // API: http://localhost:8080/Animal/delete/9638
+    @PutMapping("/update/{numeroCaravana}")
+    // API: http://localhost:8080/Animal/update/9638
     // body: {
-    // "comentarioBaja": "Animal muerto en cañada"
+    // "comentarioBaja": "Animal muerto en cañada",
+    // "activo": true
     // }
-    public ResponseEntity<String> deleteAnimal(@PathVariable String numeroCaravana,
-            @RequestBody Map<String, String> body) {
+    public ResponseEntity<String> updateAnimal(@PathVariable String numeroCaravana,
+            @RequestBody Map<String, Object> body) {
         try {
-            String comentarioBaja = body.get("comentarioBaja");
-            String result = animalService.deleteAnimal(numeroCaravana, comentarioBaja);
+            String comentarioBaja = (String) body.get("comentarioBaja");
+            boolean activo = (boolean) body.get("activo");
+            String result = animalService.updateAnimal(numeroCaravana, comentarioBaja, activo);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+
+    
 }

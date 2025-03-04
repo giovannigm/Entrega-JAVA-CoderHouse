@@ -33,14 +33,15 @@ public class AnimalService {
 
         Cabania cabania = cabaniaRepository.findById(cabaniaId)
                 .orElseThrow(() -> new Exception("Cabaña no encontrada"));
-        
+
         if (animalRepository.existsByCaravana(animal.getCaravana())) {
             throw new Exception("Ya existe un animal con el número de caravana proporcionado");
         }
 
         if (animal.getNumero_carabana_madre() != null) {
             Animal madre = animalRepository.findByCaravana(animal.getNumero_carabana_madre())
-                    .orElseThrow(() -> new Exception("No existe un animal con el número de caravana de la madre proporcionado"));
+                    .orElseThrow(() -> new Exception(
+                            "No existe un animal con el número de caravana de la madre proporcionado"));
             if (!"hembra".equalsIgnoreCase(madre.getSexo())) {
                 throw new Exception("El número de caravana proporcionado pertenece a un macho");
             }
@@ -51,17 +52,26 @@ public class AnimalService {
         return "Animal Creado con éxito";
     }
 
-    public String deleteAnimal(String numeroCaravana, String comentarioBaja) throws Exception {
+    public String updateAnimal(String numeroCaravana, String comentarioBaja, boolean activo) throws Exception {
         Animal animal = animalRepository.findByCaravana(numeroCaravana)
                 .orElseThrow(() -> new Exception("Animal no encontrado"));
-        
-        if (!animal.isActivo()) {
-            throw new Exception("El animal ya está dado de baja");
+
+        if (animal.isActivo() == activo) {
+            if (activo) {
+                throw new Exception("El animal ya está activo");
+            } else {
+                throw new Exception("El animal ya está dado de baja");
+            }
         }
 
-        animal.setComentarioBaja(comentarioBaja);
-        animal.setActivo(false);
+        if (activo) {
+            animal.setComentarioBaja(null);
+        } else {
+            animal.setComentarioBaja(comentarioBaja);
+        }
+
+        animal.setActivo(activo);
         animalRepository.save(animal);
-        return "Animal dado de baja con éxito";
+        return "Animal actualizado con éxito";
     }
 }
