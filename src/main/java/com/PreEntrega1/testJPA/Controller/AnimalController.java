@@ -30,14 +30,16 @@ public class AnimalController {
     // API: http://localhost:8080/Animal/create?cabaniaId=1
     // Params: cabaniaId=1
     // body: {
-    // "edad": 5,
-    // "color": "marrón",
-    // "especie": "vaca",
+    // "ingreso": "2025-03-04T00:06:29.990+00:00",
+    // "activo": true,
+    // "color": "gris",
+    // "especie": "obeja",
     // "sexo": "hembra",
     // "descripcion": "Una vaca marrón",
     // "raza": "Holstein",
-    // "caravana": "12546",
-    // "numero_carabana_madre": 3042
+    // "caravana": "125446",
+    // "numero_carabana_madre": "2034",
+    // "comentarioBaja": null
     // }
     public ResponseEntity<String> createAnimal(@RequestBody Animal animal, @RequestParam Long cabaniaId) {
         try {
