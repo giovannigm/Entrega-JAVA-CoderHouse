@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
 import java.util.Map;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.PreEntrega1.testJPA.service.AnimalService;
 
@@ -34,10 +35,10 @@ public class AnimalController {
     // "ingreso": "2025-03-04T00:06:29.990+00:00",
     // "activo": true,
     // "color": "gris",
-    // "especie": "obeja",
-    // "sexo": "hembraaaa",
+    // "especie": "oveja",
+    // "sexo": "hembra",
     // "descripcion": "Una vaca marrón",
-    // "raza": "Holstein",
+    // "raza": "Dorper",
     // "caravana": "125446",
     // "numero_carabana_madre": null,
     // "comentarioBaja": null
@@ -69,6 +70,14 @@ public class AnimalController {
         }
     }
 
-
-    
+    @DeleteMapping("/delete/{numeroCaravana}")
+    // API: http://localhost:8080/Animal/delete/125446
+    public ResponseEntity<String> deleteAnimalByCaravana(@PathVariable String numeroCaravana) {
+        try {
+            animalService.deleteAnimalByCaravana(numeroCaravana);
+            return ResponseEntity.status(HttpStatus.OK).body("Animal eliminado con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

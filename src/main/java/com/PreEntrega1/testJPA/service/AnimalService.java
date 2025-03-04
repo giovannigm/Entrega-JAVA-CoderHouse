@@ -74,4 +74,10 @@ public class AnimalService {
         animalRepository.save(animal);
         return "Animal actualizado con éxito";
     }
+
+    public void deleteAnimalByCaravana(String numeroCaravana) throws Exception {
+        Animal animal = animalRepository.findByCaravana(numeroCaravana)
+                .orElseThrow(() -> new Exception("Animal no encontrado"));
+        animalRepository.delete(animal);
+    }
 }
