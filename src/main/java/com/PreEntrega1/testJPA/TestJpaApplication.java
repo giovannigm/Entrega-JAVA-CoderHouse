@@ -37,12 +37,12 @@ public class TestJpaApplication implements CommandLineRunner {
             System.out.println(e.getMessage());
         }
 
-        Animal animal = new Animal("caballo", "criollo", "macho", new Date(), "2034",
-                "caballo de carrera", "marron", cab1, null);
-        Animal animal1 = new Animal("obeja", "criolla", "hembra", new Date(), "3042",
-                "caballo de carrera", "marron", cab2, null);
-        Animal animal2 = new Animal("caballo", "criollo", "hembra", new Date(), "9638",
-                "caballo de carrera", "marron", cab3, "2034"); // Cambiar de 2034l a "2034"
+        Animal animal = new Animal(new Date(), true, "marron", "caballo", "macho", "caballo de carrera", "criollo",
+                "2034", null, null, cab1);
+        Animal animal1 = new Animal(new Date(), true, "marron", "oveja", "hembra", "caballo de carrera", "criolla",
+                "3042", null, null, cab2);
+        Animal animal2 = new Animal(new Date(), true, "marron", "caballo", "hembra", "caballo de carrera", "criollo",
+                "9638", "2034", null, cab3);
 
         try {
             animalService.saveAnimal(animal);

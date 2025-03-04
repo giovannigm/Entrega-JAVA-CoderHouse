@@ -18,6 +18,7 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date ingreso;
+    private boolean activo;
     private String color;
     private String especie; // caballo, oveja, vaca, etc.
     private String sexo; // macho o hembra
@@ -25,6 +26,7 @@ public class Animal {
     private String raza;
     private String caravana;
     private String numero_carabana_madre; // si es hijo de otro animal se pone numero de carabana de la "madre"
+    private String comentarioBaja;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "cabania_id")
@@ -33,17 +35,19 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(String especie, String raza, String sexo, Date ingreso, String caravana, String descripcion,
-            String color, Cabania cabania, String numero_carabana_madre) {
-        this.especie = especie;
-        this.raza = raza;
-        this.sexo = sexo;
+    public Animal(Date ingreso, boolean activo, String color, String especie, String sexo, String descripcion,
+            String raza, String caravana, String numero_carabana_madre, String comentarioBaja, Cabania cabania) {
         this.ingreso = ingreso;
-        this.caravana = caravana;
-        this.descripcion = descripcion;
         this.color = color;
+        this.especie = especie;
+        this.sexo = sexo;
+        this.descripcion = descripcion;
+        this.raza = raza;
+        this.caravana = caravana;
+        this.numero_carabana_madre = numero_carabana_madre;
+        this.activo = activo;
+        this.comentarioBaja = comentarioBaja;
         this.cabania = cabania;
-        this.numero_carabana_madre = numero_carabana_madre; // Inicializar el nuevo campo
     }
 
 }
