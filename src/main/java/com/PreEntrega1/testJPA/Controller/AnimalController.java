@@ -2,6 +2,7 @@ package com.PreEntrega1.testJPA.Controller;
 
 import java.util.List;
 import com.PreEntrega1.testJPA.Animal;
+import com.PreEntrega1.testJPA.dto.AnimalDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +26,13 @@ public class AnimalController {
 
     @GetMapping("/all")
     // API: http://localhost:8080/Animal/all
-    public List<Animal> getAllAnimals() {
-        return animalService.findAll();
+    public ResponseEntity<List<AnimalDTO>> getAllAnimals() {
+        try {
+            List<AnimalDTO> animalDTOs = animalService.listarAnimales();
+            return ResponseEntity.ok(animalDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/create/{cabaniaId}")
@@ -56,7 +62,7 @@ public class AnimalController {
     // API: http://localhost:8080/Animal/update/9638
     // body: {
     // "comentarioBaja": "Animal muerto en cañada",
-    // "activo": true
+    // "activo": false
     // }
     public ResponseEntity<String> updateAnimal(@PathVariable String numeroCaravana,
             @RequestBody Map<String, Object> body) {

@@ -1,12 +1,15 @@
 package com.PreEntrega1.testJPA.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.PreEntrega1.testJPA.Animal;
 import com.PreEntrega1.testJPA.Cabania;
+import com.PreEntrega1.testJPA.dto.AnimalDTO;
+import com.PreEntrega1.testJPA.dto.CabaniaDTO;
 import com.PreEntrega1.testJPA.repository.AnimalRepository;
 import com.PreEntrega1.testJPA.repository.CabaniaRepository;
 
@@ -40,8 +43,9 @@ public class AnimalService {
 
         if (animal.getNumero_carabana_madre() != null) {
             Animal madre = animalRepository.findByCaravana(animal.getNumero_carabana_madre())
+                    .filter(Animal::isActivo)
                     .orElseThrow(() -> new Exception(
-                            "No existe un animal con el número de caravana de la madre proporcionado"));
+                            "No existe una madre con ese número de caravana o la madre no está activa"));
             if (!"hembra".equalsIgnoreCase(madre.getSexo())) {
                 throw new Exception("El número de caravana proporcionado pertenece a un macho");
             }
@@ -79,5 +83,36 @@ public class AnimalService {
         Animal animal = animalRepository.findByCaravana(numeroCaravana)
                 .orElseThrow(() -> new Exception("Animal no encontrado"));
         animalRepository.delete(animal);
+    }
+
+    public List<AnimalDTO> listarAnimales() {
+        List<Animal> animales = findAll();
+        return animales.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private AnimalDTO convertToDTO(Animal animal) {
+        AnimalDTO animalDTO = new AnimalDTO();
+        animalDTO.setId(animal.getId());
+        animalDTO.setIngreso(animal.getIngreso());
+        animalDTO.setActivo(animal.isActivo());
+        animalDTO.setColor(animal.getColor());
+        animalDTO.setEspecie(animal.getEspecie());
+        animalDTO.setSexo(animal.getSexo());
+        animalDTO.setDescripcion(animal.getDescripcion());
+        animalDTO.setRaza(animal.getRaza());
+        animalDTO.setCaravana(animal.getCaravana());
+        animalDTO.setNumero_carabana_madre(animal.getNumero_carabana_madre());
+        animalDTO.setComentarioBaja(animal.getComentarioBaja());
+        animalDTO.setCabania(convertToCabaniaDTO(animal.getCabania()));
+        return animalDTO;
+    }
+
+    private CabaniaDTO convertToCabaniaDTO(Cabania cabania) {
+        CabaniaDTO cabaniaDTO = new CabaniaDTO();
+        cabaniaDTO.setId(cabania.getId());
+        cabaniaDTO.setNombre(cabania.getNombre());
+        cabaniaDTO.setUbicacion(cabania.getUbicacion());
+        cabaniaDTO.setTelefono(cabania.getTelefono());
+        return cabaniaDTO;
     }
 }
