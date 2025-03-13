@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
-import com.PreEntrega1.testJPA.Cabania;
+import com.PreEntrega1.testJPA.dto.CabaniaDTO;
 import com.PreEntrega1.testJPA.service.CabaniaService;
 
 @RestController
@@ -23,10 +23,10 @@ public class CabaniaController {
 
     @GetMapping("/all")
     // API: http://localhost:8080/Cabania/all
-    public ResponseEntity<List<Cabania>> getAllCabanias() {
+    public ResponseEntity<List<CabaniaDTO>> getAllCabanias() {
         try {
-            List<Cabania> cabanias = cabaniaService.findAll();
-            return ResponseEntity.ok(cabanias);
+            List<CabaniaDTO> cabaniaDTOs = cabaniaService.listarCabania();
+            return ResponseEntity.ok(cabaniaDTOs);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

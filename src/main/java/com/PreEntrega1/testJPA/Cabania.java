@@ -10,10 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Data // Te ahoras de escribir los getters y setters
+@Data // Te ahorras de escribir los getters y setters
 @Table(name = "Cabania")
 public class Cabania {
     @Id
@@ -24,8 +23,7 @@ public class Cabania {
     private String telefono;
 
     @OneToMany(mappedBy = "cabania", cascade = CascadeType.ALL)
-    @JsonIgnore // Evitar bucle infinito con Aimales -> Cabania -> Animales -> Cabania -> ...
-    private List<Animal> animales;
+    private List<Animal> animales; // Lista de animales asociados a la cabaña
 
     public Cabania() {
     }
