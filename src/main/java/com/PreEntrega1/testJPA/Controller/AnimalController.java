@@ -59,7 +59,7 @@ public class AnimalController {
     // "numero_carabana_madre": null,
     // "comentarioBaja": null
     // }
-    @Operation(summary = "Crear un animal por cabania")
+    @Operation(summary = "Crear un animal por cabania", description = "Crear un animal por cabaniaID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Animal creado con éxito", content = @Content(schema = @Schema(implementation = AnimalDTO.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
@@ -93,7 +93,7 @@ public class AnimalController {
     }
 
     @DeleteMapping("/delete/{numeroCaravana}")
-    @Operation(summary = "Eliminar un animal por numero de caravana")
+    @Operation(summary = "Eliminar un animal por numero de caravana", description = "Eliminar un animal por numero de caravana")
     // API: http://localhost:8080/Animal/delete/125446
     public ResponseEntity<String> deleteAnimalByCaravana(@PathVariable String numeroCaravana) {
         try {
