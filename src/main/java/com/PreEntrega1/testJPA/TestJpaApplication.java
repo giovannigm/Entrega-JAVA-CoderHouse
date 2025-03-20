@@ -24,7 +24,9 @@ public class TestJpaApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("API REST - 2° PRE ENTREGA");
+        System.out.println("API REST - ENTREGA PROYECTO FINAL");
+        System.out.println("SWAGGER= " + "http://localhost:8080/swagger-ui/index.html");
+        System.out.println("h2-console= " + "http://localhost:8080/h2-console/");
         Cabania cab1 = new Cabania("Prueba", "Mi PC", "456");
         Cabania cab2 = new Cabania("El establo", "ruta 2", "1256");
         Cabania cab3 = new Cabania("suffolk", "ruta 3", "1256");
@@ -43,11 +45,14 @@ public class TestJpaApplication implements CommandLineRunner {
                 "3042", null, null, cab2);
         Animal animal2 = new Animal(new Date(), true, "marron", "caballo", "hembra", "caballo de carrera", "criollo",
                 "9638", "2034", null, cab3);
+        Animal animal3 = new Animal(new Date(), false, "negro", "chivo", "macho", "el mejor chivo", "normal",
+                "4563", null, "se presto a vecino", cab1);
 
         try {
             animalService.saveAnimal(animal);
             animalService.saveAnimal(animal1);
             animalService.saveAnimal(animal2);
+            animalService.saveAnimal(animal3);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

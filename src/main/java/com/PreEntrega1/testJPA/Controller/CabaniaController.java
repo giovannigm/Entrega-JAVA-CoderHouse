@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import com.PreEntrega1.testJPA.dto.CabaniaDTO;
 import com.PreEntrega1.testJPA.service.CabaniaService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/Cabania")
@@ -22,6 +23,7 @@ public class CabaniaController {
     private CabaniaService cabaniaService;
 
     @GetMapping("/all")
+    @Operation(summary = "Obtener todas las cabanias")
     // API: http://localhost:8080/Cabania/all
     public ResponseEntity<List<CabaniaDTO>> getAllCabanias() {
         try {

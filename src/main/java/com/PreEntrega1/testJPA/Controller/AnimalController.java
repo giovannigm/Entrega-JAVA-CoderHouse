@@ -3,6 +3,9 @@ package com.PreEntrega1.testJPA.Controller;
 import java.util.List;
 import com.PreEntrega1.testJPA.Animal;
 import com.PreEntrega1.testJPA.dto.AnimalDTO;
+import com.PreEntrega1.testJPA.dto.AnimalUpdateDTO;
+import com.PreEntrega1.testJPA.dto.AnimalCreateDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.PreEntrega1.testJPA.service.AnimalService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @RestController
 @RequestMapping("/Animal")
 public class AnimalController {
@@ -26,6 +35,7 @@ public class AnimalController {
 
     @GetMapping("/all")
     // API: http://localhost:8080/Animal/all
+    @Operation(summary = "Obtener todos los animales ", description = "Obtener todos los Animales de la base de datos")
     public ResponseEntity<List<AnimalDTO>> getAllAnimals() {
         try {
             List<AnimalDTO> animalDTOs = animalService.listarAnimales();
@@ -49,8 +59,15 @@ public class AnimalController {
     // "numero_carabana_madre": null,
     // "comentarioBaja": null
     // }
-    public ResponseEntity<String> createAnimal(@RequestBody Animal animal, @PathVariable Long cabaniaId) {
+    @Operation(summary = "Crear un animal por cabania")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Animal creado con éxito", content = @Content(schema = @Schema(implementation = AnimalDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    public ResponseEntity<String> createAnimal(@RequestBody AnimalCreateDTO AnimalCreateDTO,
+            @PathVariable Long cabaniaId) {
         try {
+            Animal animal = animalService.convertToAnimalCreate(AnimalCreateDTO);
             String createdAnimal = animalService.createAnimalWithCabania(animal, cabaniaId);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdAnimal);
         } catch (Exception e) {
@@ -59,17 +76,16 @@ public class AnimalController {
     }
 
     @PutMapping("/update/{numeroCaravana}")
+    @Operation(summary = "Cambiar estado de un Animal, Sea por muerte o por X razon", description = "Actualizar un animal por numero de caravana")
     // API: http://localhost:8080/Animal/update/9638
     // body: {
     // "comentarioBaja": "Animal muerto en cañada",
     // "activo": false
     // }
     public ResponseEntity<String> updateAnimal(@PathVariable String numeroCaravana,
-            @RequestBody Map<String, Object> body) {
+            @RequestBody AnimalUpdateDTO animalUpdateDTO) {
         try {
-            String comentarioBaja = (String) body.get("comentarioBaja");
-            boolean activo = (boolean) body.get("activo");
-            String result = animalService.updateAnimal(numeroCaravana, comentarioBaja, activo);
+            String result = animalService.updateAnimal(numeroCaravana, animalUpdateDTO);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -77,6 +93,7 @@ public class AnimalController {
     }
 
     @DeleteMapping("/delete/{numeroCaravana}")
+    @Operation(summary = "Eliminar un animal por numero de caravana")
     // API: http://localhost:8080/Animal/delete/125446
     public ResponseEntity<String> deleteAnimalByCaravana(@PathVariable String numeroCaravana) {
         try {

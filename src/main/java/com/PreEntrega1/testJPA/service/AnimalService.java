@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.PreEntrega1.testJPA.Animal;
 import com.PreEntrega1.testJPA.Cabania;
 import com.PreEntrega1.testJPA.dto.AnimalDTO;
+import com.PreEntrega1.testJPA.dto.AnimalCreateDTO;
+import com.PreEntrega1.testJPA.dto.AnimalUpdateDTO;
 import com.PreEntrega1.testJPA.dto.CabaniaDTO;
 import com.PreEntrega1.testJPA.repository.AnimalRepository;
 import com.PreEntrega1.testJPA.repository.CabaniaRepository;
@@ -34,6 +36,10 @@ public class AnimalService {
             throw new Exception("No se puede crear un animal que no esté activo");
         }
 
+        if (animal.getComentarioBaja() != null) {
+            throw new Exception("`comentarioBaja` tiene que ser `null` No se puede ingresar un animal ya dado de baja");
+        }
+
         Cabania cabania = cabaniaRepository.findById(cabaniaId)
                 .orElseThrow(() -> new Exception("Cabaña no encontrada"));
 
@@ -47,7 +53,7 @@ public class AnimalService {
                     .orElseThrow(() -> new Exception(
                             "No existe una madre con ese número de caravana o la madre no está activa"));
             if (!"hembra".equalsIgnoreCase(madre.getSexo())) {
-                throw new Exception("El número de caravana proporcionado pertenece a un macho");
+                throw new Exception("El número de caravana de madre proporcionado pertenece a un macho");
             }
         }
 
@@ -56,9 +62,12 @@ public class AnimalService {
         return "Animal Creado con éxito";
     }
 
-    public String updateAnimal(String numeroCaravana, String comentarioBaja, boolean activo) throws Exception {
+    public String updateAnimal(String numeroCaravana, AnimalUpdateDTO animalUpdateDTO) throws Exception {
         Animal animal = animalRepository.findByCaravana(numeroCaravana)
                 .orElseThrow(() -> new Exception("Animal no encontrado"));
+
+        boolean activo = animalUpdateDTO.isActivo();
+        String comentarioBaja = animalUpdateDTO.getComentarioBaja();
 
         if (animal.isActivo() == activo) {
             if (activo) {
@@ -114,5 +123,21 @@ public class AnimalService {
         cabaniaDTO.setUbicacion(cabania.getUbicacion());
         cabaniaDTO.setTelefono(cabania.getTelefono());
         return cabaniaDTO;
+    }
+
+    public Animal convertToAnimalCreate(AnimalCreateDTO AnimalCreateDTO) {
+        Animal animal = new Animal();
+        animal.setIngreso(AnimalCreateDTO.getIngreso());
+        animal.setActivo(AnimalCreateDTO.isActivo());
+        animal.setColor(AnimalCreateDTO.getColor());
+        animal.setEspecie(AnimalCreateDTO.getEspecie());
+        animal.setSexo(AnimalCreateDTO.getSexo());
+        animal.setDescripcion(AnimalCreateDTO.getDescripcion());
+        animal.setRaza(AnimalCreateDTO.getRaza());
+        animal.setCaravana(AnimalCreateDTO.getCaravana());
+        animal.setNumero_carabana_madre(AnimalCreateDTO.getNumero_carabana_madre());
+        animal.setComentarioBaja(AnimalCreateDTO.getComentarioBaja());
+        // No establecer cabania aquí, ya que se establece en el servicio
+        return animal;
     }
 }
