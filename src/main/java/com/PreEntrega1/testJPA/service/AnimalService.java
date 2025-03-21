@@ -138,7 +138,6 @@ public class AnimalService {
         animal.setDescripcion(AnimalCreateDTO.getDescripcion());
         animal.setRaza(AnimalCreateDTO.getRaza());
         animal.setCaravana(AnimalCreateDTO.getCaravana());
-        System.out.println(AnimalCreateDTO.getNumero_carabana_madre());
         if (AnimalCreateDTO.getNumero_carabana_madre() != null) {
             animal.setNumero_carabana_madre(Integer.valueOf(AnimalCreateDTO.getNumero_carabana_madre()));
         } else {
