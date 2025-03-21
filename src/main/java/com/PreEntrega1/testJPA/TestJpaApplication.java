@@ -40,13 +40,13 @@ public class TestJpaApplication implements CommandLineRunner {
         }
 
         Animal animal = new Animal(new Date(), true, "marron", "caballo", "macho", "caballo de carrera", "criollo",
-                "2034", null, null, cab1);
+                2034, null, null, cab1);
         Animal animal1 = new Animal(new Date(), true, "marron", "oveja", "hembra", "caballo de carrera", "criolla",
-                "3042", null, null, cab2);
+                3042, null, null, cab2);
         Animal animal2 = new Animal(new Date(), true, "marron", "caballo", "hembra", "caballo de carrera", "criollo",
-                "9638", "2034", null, cab3);
+                9638, 2034, null, cab3);
         Animal animal3 = new Animal(new Date(), false, "negro", "chivo", "macho", "el mejor chivo", "normal",
-                "4563", null, "se presto a vecino", cab1);
+                4563, null, "se presto a vecino", cab1);
 
         try {
             animalService.saveAnimal(animal);

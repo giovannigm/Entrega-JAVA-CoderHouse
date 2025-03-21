@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
-import java.util.Map;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.PreEntrega1.testJPA.service.AnimalService;
@@ -36,6 +35,9 @@ public class AnimalController {
     @GetMapping("/all")
     // API: http://localhost:8080/Animal/all
     @Operation(summary = "Obtener todos los animales ", description = "Obtener todos los Animales de la base de datos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "se obtuvo Animal con éxito", content = @Content(schema = @Schema(implementation = AnimalDTO.class))),
+    })
     public ResponseEntity<List<AnimalDTO>> getAllAnimals() {
         try {
             List<AnimalDTO> animalDTOs = animalService.listarAnimales();
@@ -61,8 +63,8 @@ public class AnimalController {
     // }
     @Operation(summary = "Crear un animal por cabania", description = "Crear un animal por cabaniaID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Animal creado con éxito", content = @Content(schema = @Schema(implementation = AnimalDTO.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "201", description = "Animal creado con éxito", content = @Content(schema = @Schema(implementation = AnimalCreateDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<String> createAnimal(@RequestBody AnimalCreateDTO AnimalCreateDTO,
             @PathVariable Long cabaniaId) {
@@ -76,13 +78,17 @@ public class AnimalController {
     }
 
     @PutMapping("/update/{numeroCaravana}")
-    @Operation(summary = "Cambiar estado de un Animal, Sea por muerte o por X razon", description = "Actualizar un animal por numero de caravana")
     // API: http://localhost:8080/Animal/update/9638
     // body: {
     // "comentarioBaja": "Animal muerto en cañada",
     // "activo": false
     // }
-    public ResponseEntity<String> updateAnimal(@PathVariable String numeroCaravana,
+    @Operation(summary = "Cambiar estado de un Animal, Sea por muerte o por X razon", description = "Actualizar un animal por numero de caravana")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Animal activo con éxito", content = @Content(schema = @Schema(implementation = AnimalUpdateDTO.class))),
+            @ApiResponse(responseCode = "500", description = "error", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<String> updateAnimal(@PathVariable int numeroCaravana,
             @RequestBody AnimalUpdateDTO animalUpdateDTO) {
         try {
             String result = animalService.updateAnimal(numeroCaravana, animalUpdateDTO);
@@ -93,9 +99,12 @@ public class AnimalController {
     }
 
     @DeleteMapping("/delete/{numeroCaravana}")
-    @Operation(summary = "Eliminar un animal por numero de caravana", description = "Eliminar un animal por numero de caravana")
     // API: http://localhost:8080/Animal/delete/125446
-    public ResponseEntity<String> deleteAnimalByCaravana(@PathVariable String numeroCaravana) {
+    @Operation(summary = "Eliminar un animal por numero de caravana", description = "Eliminar un animal por numero de caravana")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Animal eliminado con éxito", content = @Content(schema = @Schema(implementation = String.class))),
+    })
+    public ResponseEntity<String> deleteAnimalByCaravana(@PathVariable int numeroCaravana) {
         try {
             animalService.deleteAnimalByCaravana(numeroCaravana);
             return ResponseEntity.status(HttpStatus.OK).body("Animal eliminado con éxito");

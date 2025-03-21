@@ -37,23 +37,26 @@ public class AnimalService {
         }
 
         if (animal.getComentarioBaja() != null) {
-            throw new Exception("`comentarioBaja` tiene que ser `null` No se puede ingresar un animal ya dado de baja");
+            throw new Exception(
+                    "`comentarioBaja` tiene que ser `null` No se puede ingresar un animal con un `comentarioBaja`");
         }
 
         Cabania cabania = cabaniaRepository.findById(cabaniaId)
-                .orElseThrow(() -> new Exception("Cabaña no encontrada"));
+                .orElseThrow(() -> new Exception("Cabaña con id " + cabaniaId + " no encontrada"));
 
         if (animalRepository.existsByCaravana(animal.getCaravana())) {
-            throw new Exception("Ya existe un animal con el número de caravana proporcionado");
+            throw new Exception(
+                    "Ya existe un animal con el número de caravana " + animal.getCaravana());
         }
-
-        if (animal.getNumero_carabana_madre() != null) {
+        if (animal.getNumero_carabana_madre() != -1) {
             Animal madre = animalRepository.findByCaravana(animal.getNumero_carabana_madre())
                     .filter(Animal::isActivo)
                     .orElseThrow(() -> new Exception(
-                            "No existe una madre con ese número de caravana o la madre no está activa"));
+                            "No existe una madre con el numero de caravana " + animal.getNumero_carabana_madre()
+                                    + " o No está activa"));
             if (!"hembra".equalsIgnoreCase(madre.getSexo())) {
-                throw new Exception("El número de caravana de madre proporcionado pertenece a un macho");
+                throw new Exception("El número de caravana " + animal.getNumero_carabana_madre()
+                        + " de madre pertenece a un macho!");
             }
         }
 
@@ -62,7 +65,7 @@ public class AnimalService {
         return "Animal Creado con éxito";
     }
 
-    public String updateAnimal(String numeroCaravana, AnimalUpdateDTO animalUpdateDTO) throws Exception {
+    public String updateAnimal(int numeroCaravana, AnimalUpdateDTO animalUpdateDTO) throws Exception {
         Animal animal = animalRepository.findByCaravana(numeroCaravana)
                 .orElseThrow(() -> new Exception("Animal no encontrado"));
 
@@ -71,9 +74,9 @@ public class AnimalService {
 
         if (animal.isActivo() == activo) {
             if (activo) {
-                throw new Exception("El animal ya está activo");
+                throw new Exception("El animal " + numeroCaravana + " ya está activo");
             } else {
-                throw new Exception("El animal ya está dado de baja");
+                throw new Exception("El animal " + numeroCaravana + " ya está dado de baja");
             }
         }
 
@@ -88,7 +91,7 @@ public class AnimalService {
         return "Animal actualizado con éxito";
     }
 
-    public void deleteAnimalByCaravana(String numeroCaravana) throws Exception {
+    public void deleteAnimalByCaravana(int numeroCaravana) throws Exception {
         Animal animal = animalRepository.findByCaravana(numeroCaravana)
                 .orElseThrow(() -> new Exception("Animal no encontrado"));
         animalRepository.delete(animal);
@@ -135,7 +138,12 @@ public class AnimalService {
         animal.setDescripcion(AnimalCreateDTO.getDescripcion());
         animal.setRaza(AnimalCreateDTO.getRaza());
         animal.setCaravana(AnimalCreateDTO.getCaravana());
-        animal.setNumero_carabana_madre(AnimalCreateDTO.getNumero_carabana_madre());
+        System.out.println(AnimalCreateDTO.getNumero_carabana_madre());
+        if (AnimalCreateDTO.getNumero_carabana_madre() != null) {
+            animal.setNumero_carabana_madre(Integer.valueOf(AnimalCreateDTO.getNumero_carabana_madre()));
+        } else {
+            animal.setNumero_carabana_madre(-1);
+        }
         animal.setComentarioBaja(AnimalCreateDTO.getComentarioBaja());
         // No establecer cabania aquí, ya que se establece en el servicio
         return animal;

@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
-    // Animal findAnimalByCaravana(String caravana);
-    boolean existsByCaravana(String numeroCaravana);
-    Optional<Animal> findByCaravana(String numeroCaravana);
+    boolean existsByCaravana(int numeroCaravana); // Cambiado de String a int
+    Optional<Animal> findByCaravana(int numeroCaravana); // Cambiado de String a int
 }

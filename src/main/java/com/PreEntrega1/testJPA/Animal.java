@@ -24,8 +24,8 @@ public class Animal {
     private String sexo; // macho o hembra
     private String descripcion;
     private String raza;
-    private String caravana;
-    private String numero_carabana_madre; // si es hijo de otro animal se pone numero de carabana de la "madre"
+    private int caravana;
+    private Integer numero_carabana_madre; // si es hijo de otro animal se pone numero de carabana de la "madre"
     private String comentarioBaja;
 
     @ManyToOne(optional = false)
@@ -36,7 +36,7 @@ public class Animal {
     }
 
     public Animal(Date ingreso, boolean activo, String color, String especie, String sexo, String descripcion,
-            String raza, String caravana, String numero_carabana_madre, String comentarioBaja, Cabania cabania) {
+            String raza, int caravana, Integer numero_carabana_madre, String comentarioBaja, Cabania cabania) {
         this.ingreso = ingreso;
         this.color = color;
         this.especie = especie;

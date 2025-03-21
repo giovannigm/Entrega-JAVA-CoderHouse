@@ -13,8 +13,8 @@ public class AnimalDTO {
     private String sexo;
     private String descripcion;
     private String raza;
-    private String caravana;
-    private String numero_carabana_madre;
+    private int caravana;
+    private Integer numero_carabana_madre;
     private String comentarioBaja;
     private CabaniaDTO cabania;
 
